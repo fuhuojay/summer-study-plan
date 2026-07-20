@@ -1,0 +1,46 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare static site
+        shell: bash
+        run: |
+          set -euo pipefail
+          origin="https://summer-study-plan-2026.fuhuojay.chatgpt.site/summer"
+          mkdir -p site/assets
+          curl -fsSL "$origin/index.html" -o site/index.html
+          curl -fsSL "$origin/app.js" -o site/app.js
+          curl -fsSL "$origin/entertainment.js" -o site/entertainment.js
+          curl -fsSL "$origin/styles.css" -o site/styles.css
+          curl -fsSL "$origin/manifest.webmanifest" -o site/manifest.webmanifest
+          curl -fsSL "$origin/sw.js" -o site/sw.js
+          curl -fsSL "$origin/assets/study-desk.png" -o site/assets/study-desk.png
+          touch site/.nojekyll
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
