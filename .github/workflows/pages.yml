@@ -26,14 +26,15 @@ jobs:
         run: |
           set -euo pipefail
           origin="https://summer-study-plan-2026.fuhuojay.chatgpt.site/summer"
+          version="${GITHUB_SHA}"
           mkdir -p site/assets
-          curl -fsSL "$origin/index.html" -o site/index.html
-          curl -fsSL "$origin/app.js" -o site/app.js
-          curl -fsSL "$origin/entertainment.js" -o site/entertainment.js
-          curl -fsSL "$origin/styles.css" -o site/styles.css
-          curl -fsSL "$origin/manifest.webmanifest" -o site/manifest.webmanifest
-          curl -fsSL "$origin/sw.js" -o site/sw.js
-          curl -fsSL "$origin/assets/study-desk.png" -o site/assets/study-desk.png
+          curl -fsSL "$origin/index.html?v=$version" -o site/index.html
+          curl -fsSL "$origin/app.js?v=$version" -o site/app.js
+          curl -fsSL "$origin/entertainment.js?v=$version" -o site/entertainment.js
+          curl -fsSL "$origin/styles.css?v=$version" -o site/styles.css
+          curl -fsSL "$origin/manifest.webmanifest?v=$version" -o site/manifest.webmanifest
+          curl -fsSL "$origin/sw.js?v=$version" -o site/sw.js
+          curl -fsSL "$origin/assets/study-desk.png?v=$version" -o site/assets/study-desk.png
           touch site/.nojekyll
       - name: Configure Pages
         uses: actions/configure-pages@v5
