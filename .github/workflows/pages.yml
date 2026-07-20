@@ -27,6 +27,7 @@ jobs:
           set -euo pipefail
           origin="https://summer-study-plan-2026.fuhuojay.chatgpt.site/summer"
           version="${GITHUB_SHA}"
+          sleep 10
           mkdir -p site/assets
           curl -fsSL "$origin/index.html?v=$version" -o site/index.html
           curl -fsSL "$origin/app.js?v=$version" -o site/app.js
